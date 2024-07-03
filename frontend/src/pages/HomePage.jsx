@@ -6,6 +6,8 @@
 // Authors: Devin Daniels and Zachary Maes under the supervision of Dr. Michael Curry and Dr. Danielle Safonte
 
 import { React } from 'react';
+import ERD from '../images/ERD.png';
+import schema from '../images/Schema.png';
 
 function HomePage() {
     return(
@@ -90,6 +92,17 @@ function HomePage() {
                     </tr>
                 </tbody>
             </table>
+
+            <h3>Entity Relationship Diagram (ERD)</h3>
+            <div>
+                <img src = {ERD} alt ="ERD" />
+            </div>
+
+            <h3>Schema</h3>
+            <div>
+                <img src = {schema} alt ="Schema" />
+            </div>
+            
         </>
     )
 }
