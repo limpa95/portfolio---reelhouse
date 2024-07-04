@@ -11,6 +11,7 @@ const router = express.Router();
 // imports routes from controller file
 const {
   getEngagements,
+  getEngagementsIDs,
   getUsers,
   getMovies,
   getTVShows,
@@ -22,6 +23,7 @@ const {
 
 // creates routes to access database queries
 router.get("/", getEngagements);
+router.get("/engagementsids", getEngagementsIDs);
 router.get("/users", getUsers);
 router.get("/movies", getMovies);
 router.get("/tvshows", getTVShows);

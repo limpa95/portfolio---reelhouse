@@ -27,6 +27,21 @@ const getEngagements = async (req, res) => {
   }
 };
 
+// Returns all rows of engagements in engagements with movie_id and television_id
+const getEngagementsIDs = async (req, res) => {
+  try {
+    // Select all rows from the "Engagements" table
+    const query = "SELECT * FROM Engagements;";
+    // Execute the query using the "db" object from the configuration file
+    const [rows] = await db.query(query);
+    // Send back the rows to the client
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching engagements from the database:", error);
+    res.status(500).json({ error: "Error fetching engagements" });
+  }
+};
+
 // define a new GET request with express:
 const getUsers = async (req, res) => {
   try {
@@ -203,6 +218,7 @@ const deleteEngagement = async (req, res) => {
 // Export the functions as methods of an object
 module.exports = {
   getEngagements,
+  getEngagementsIDs,
   getUsers,
   getMovies,
   getTVShows,
