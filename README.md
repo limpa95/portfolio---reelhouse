@@ -1,6 +1,6 @@
 # Reelhouse Web App
 
-[Banner](images/Home.PNG)
+![Banner](images/Home.PNG)
 
 **Frontend:** 
 React/Vite
