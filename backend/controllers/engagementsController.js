@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getEngagements = async (req, res) => {
   try {
     // Select all rows from the "Engagements" table
-    const query = 'SELECT engagement_id, favorite, rating, view, user_id, Movies.movie_title AS movie_title, Televisions.television_title AS television_title FROM "Reelhouse"."Engagements" LEFT JOIN Movies ON Engagements.movie_id = Movies.movie_id LEFT JOIN Televisions ON Engagements.television_id = Televisions.television_id;';
+    const query = 'SELECT engagement_id, favorite, rating, view, user_id, "Reelhouse"."Movies".movie_title AS movie_title, "Reelhouse"."Televisions".television_title AS television_title FROM "Reelhouse"."Engagements" LEFT JOIN "Reelhouse"."Movies" ON "Reelhouse"."Engagements".movie_id = Movies.movie_id LEFT JOIN "Reelhouse"."Televisions" ON "Reelhouse"."Engagements".television_id = "Reelhouse"."Televisions".television_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
