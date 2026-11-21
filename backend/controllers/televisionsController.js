@@ -18,7 +18,7 @@ const getTelevisions = async (req, res) => {
     // Select all rows from the "Televisions" table
     const query = "SELECT Televisions.television_id, television_title, COALESCE((SELECT sum(Engagements.view) FROM Engagements WHERE Engagements.television_id = Televisions.television_id), 0) AS 'television_total_view' FROM Televisions";
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -31,9 +31,9 @@ const getTelevisions = async (req, res) => {
 const getTelevisionsGenres = async (req, res) => {
   try {
     // Select all rows from the "Televisions_Genres" table
-    const query = 'SELECT  Televisions_Genres.television_genre_id, Genres.genre_name AS `genres`, Televisions_Genres.television_id_tg AS `televisionID` FROM Televisions_Genres INNER JOIN Genres ON Genres.genre_id = Televisions_Genres.genre_id_tg INNER JOIN Televisions ON Televisions.television_id = Televisions_Genres.television_id_tg Order by Televisions.television_id;';
+    const query = 'SELECT  Televisions_Genres.television_genre_id, Genres.genre_name AS "genres", Televisions_Genres.television_id_tg AS "televisionID" FROM Televisions_Genres INNER JOIN Genres ON Genres.genre_id = Televisions_Genres.genre_id_tg INNER JOIN Televisions ON Televisions.television_id = Televisions_Genres.television_id_tg Order by Televisions.television_id;';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -46,9 +46,9 @@ const getTelevisionsGenres = async (req, res) => {
 const getTelevisionsActors = async (req, res) => {
   try {
     // Select all rows from the "Televisions_Actors" table
-    const query = 'SELECT  Televisions_Actors.television_actor_id, Televisions_Actors.television_actor_id, Actors.actor_name AS `actors`, Televisions_Actors.television_id_ta AS `televisionID` FROM Televisions_Actors INNER JOIN Actors ON Actors.actor_id = Televisions_Actors.actor_id_ta INNER JOIN Televisions ON Televisions.television_id = Televisions_Actors.television_id_ta Order by Televisions.television_id;';
+    const query = 'SELECT  Televisions_Actors.television_actor_id, Televisions_Actors.television_actor_id, Actors.actor_name AS "actors", Televisions_Actors.television_id_ta AS "televisionID" FROM Televisions_Actors INNER JOIN Actors ON Actors.actor_id = Televisions_Actors.actor_id_ta INNER JOIN Televisions ON Televisions.television_id = Televisions_Actors.television_id_ta Order by Televisions.television_id;';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -61,9 +61,9 @@ const getTelevisionsActors = async (req, res) => {
 const getTelevisionsDirectors = async (req, res) => {
   try {
     // Select all rows from the "Televisions_Directors" table
-    const query = 'SELECT  Televisions_Directors.television_director_id, Directors.director_name AS `directors`, Televisions_Directors.television_id_td AS `televisionID` FROM Televisions_Directors INNER JOIN Directors ON Directors.director_id = Televisions_Directors.director_id_td INNER JOIN Televisions ON Televisions.television_id = Televisions_Directors.television_id_td Order by Televisions.television_id;';
+    const query = 'SELECT  Televisions_Directors.television_director_id, Directors.director_name AS "directors", Televisions_Directors.television_id_td AS "televisionID" FROM Televisions_Directors INNER JOIN Directors ON Directors.director_id = Televisions_Directors.director_id_td INNER JOIN Televisions ON Televisions.television_id = Televisions_Directors.television_id_td Order by Televisions.television_id;';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -77,8 +77,8 @@ const getTelevisionsDirectors = async (req, res) => {
 const getTelevisionByID = async (req, res) => {
   try {
     const televisionID = req.params.id;
-    const query = "SELECT * FROM Televisions WHERE television_id = ?";
-    const [result] = await db.query(query, [televisionID]);
+    const query = "SELECT * FROM Televisions WHERE television_id = $1";
+    const {result} = await db.query(query, [televisionID]);
     // Check if tv show was found
     if (result.length === 0) {
       return res.status(404).json({ error: "TV show not found" });
@@ -95,9 +95,9 @@ const getTelevisionByID = async (req, res) => {
 const getGenres = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT genre_id, genre_name FROM `Genres`;';
+    const query = 'SELECT genre_id, genre_name FROM "Genres";';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -110,9 +110,9 @@ const getGenres = async (req, res) => {
 const getActors = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT actor_id, actor_name FROM `Actors`;';
+    const query = 'SELECT actor_id, actor_name FROM "Actors";';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -125,9 +125,9 @@ const getActors = async (req, res) => {
 const getDirectors = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT director_id, director_name FROM `Directors`;';
+    const query = 'SELECT director_id, director_name FROM "Directors";';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -141,7 +141,7 @@ const createTelevision = async (req, res) => {
   try {
     const { television_title } = req.body;
     const query =
-      "INSERT INTO Televisions (television_title) VALUES (?)";
+      "INSERT INTO Televisions (television_title) VALUES ($1)";
 
     const response = await db.query(query, [
       television_title
@@ -160,7 +160,7 @@ const createTelevisionGenre = async (req, res) => {
   try {
     const { genre_name } = req.body;
     const query =
-      "INSERT INTO Televisions_Genres (television_id_tg, genre_id_tg) VALUES ((SELECT max(television_id) FROM Televisions), (SELECT genre_id FROM Genres WHERE genre_name = ?))";
+      "INSERT INTO Televisions_Genres (television_id_tg, genre_id_tg) VALUES ((SELECT max(television_id) FROM Televisions), (SELECT genre_id FROM Genres WHERE genre_name = $1))";
 
     const response = await db.query(query, [
       genre_name
@@ -179,7 +179,7 @@ const createTelevisionActor = async (req, res) => {
   try {
     const { actor_name } = req.body;
     const query =
-      "INSERT INTO Televisions_Actors (television_id_ta, actor_id_ta) VALUES ((SELECT max(television_id) FROM Televisions), (SELECT actor_id FROM Actors WHERE actor_name = ?))";
+      "INSERT INTO Televisions_Actors (television_id_ta, actor_id_ta) VALUES ((SELECT max(television_id) FROM Televisions), (SELECT actor_id FROM Actors WHERE actor_name = $1))";
 
     const response = await db.query(query, [
       actor_name
@@ -198,7 +198,7 @@ const createTelevisionDirector = async (req, res) => {
   try {
     const { director_name } = req.body;
     const query =
-      "INSERT INTO Televisions_Directors (television_id_td, director_id_td) VALUES ((SELECT max(television_id) FROM Televisions), (SELECT director_id FROM Directors WHERE director_name = ?))";
+      "INSERT INTO Televisions_Directors (television_id_td, director_id_td) VALUES ((SELECT max(television_id) FROM Televisions), (SELECT director_id FROM Directors WHERE director_name = $1))";
 
     const response = await db.query(query, [
       director_name
@@ -220,7 +220,7 @@ const updateTelevision = async (req, res) => {
   const newTelevision = req.body;
 
   try {
-    const [data] = await db.query("SELECT * FROM Televisions WHERE television_id = ?", [
+    const {data} = await db.query("SELECT * FROM Televisions WHERE television_id = $1", [
       televisionID,
     ]);
 
@@ -229,7 +229,7 @@ const updateTelevision = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevision, oldTelevision)) {
       const query =
-        "UPDATE Televisions SET television_title=? WHERE television_id=?";
+        "UPDATE Televisions SET television_title=$1 WHERE television_id=$2";
 
       const values = [
         newTelevision.television_title,
@@ -259,7 +259,7 @@ const updateTelevisionGenre = async (req, res) => {
   const newTelevisionGenre2 = {television_genre_id: parseInt(televisionGenreID), television_id_tg: newTelevisionGenre1.television_id_tg, genre_id_tg: newTelevisionGenre1.genre_id_tg};
 
   try {
-    const [data] = await db.query("SELECT * FROM Televisions_Genres WHERE television_genre_id = ?", [
+    const {data} = await db.query("SELECT * FROM Televisions_Genres WHERE television_genre_id = $1", [
       televisionGenreID,
     ]);
 
@@ -268,7 +268,7 @@ const updateTelevisionGenre = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevisionGenre2, oldTelevisionGenre)) {
       const query =
-        "UPDATE Televisions_Genres SET television_id_tg=?, genre_id_tg=? WHERE television_genre_id=?";
+        "UPDATE Televisions_Genres SET television_id_tg=$1, genre_id_tg=$2 WHERE television_genre_id=$3";
 
       const values = [
         newTelevisionGenre2.television_id_tg,
@@ -299,7 +299,7 @@ const updateTelevisionActor = async (req, res) => {
   const newTelevisionActor2 = {television_actor_id: parseInt(televisionActorID), television_id_ta: newTelevisionActor1.television_id_ta, actor_id_ta: newTelevisionActor1.actor_id_ta};
 
   try {
-    const [data] = await db.query("SELECT * FROM Televisions_Actors WHERE television_actor_id = ?", [
+    const {data} = await db.query("SELECT * FROM Televisions_Actors WHERE television_actor_id = $1", [
       televisionActorID,
     ]);
 
@@ -308,7 +308,7 @@ const updateTelevisionActor = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevisionActor2, oldTelevisionActor)) {
       const query =
-        "UPDATE Televisions_Actors SET television_id_ta=?, actor_id_ta=? WHERE television_actor_id=?";
+        "UPDATE Televisions_Actors SET television_id_ta=$1, actor_id_ta=$2 WHERE television_actor_id=$3";
 
       const values = [
         newTelevisionActor2.television_id_ta,
@@ -339,7 +339,7 @@ const updateTelevisionDirector = async (req, res) => {
   const newTelevisionDirector2 = {television_director_id: parseInt(televisionDirectorID), television_id_td: newTelevisionDirector1.television_id_td, director_id_td: newTelevisionDirector1.director_id_td};
 
   try {
-    const [data] = await db.query("SELECT * FROM Televisions_Directors WHERE television_director_id = ?", [
+    const {data} = await db.query("SELECT * FROM Televisions_Directors WHERE television_director_id = $1", [
       televisionDirectorID,
     ]);
 
@@ -348,7 +348,7 @@ const updateTelevisionDirector = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevisionDirector2, oldTelevisionDirector)) {
       const query =
-        "UPDATE Televisions_Directors SET television_id_td=?, director_id_td=? WHERE television_director_id=?";
+        "UPDATE Televisions_Directors SET television_id_td=$1, director_id_td=$2 WHERE television_director_id=$3";
 
       const values = [
         newTelevisionDirector2.television_id_td,
@@ -378,8 +378,8 @@ const deleteTelevision = async (req, res) => {
 
   try {
     // Ensure the person exitst
-    const [isExisting] = await db.query(
-      "SELECT 1 FROM Televisions WHERE television_id = ?",
+    const {isExisting} = await db.query(
+      "SELECT 1 FROM Televisions WHERE television_id = $1",
       [televisionID]
     );
 
@@ -389,8 +389,8 @@ const deleteTelevision = async (req, res) => {
     }
 
     // Delete related records from the intersection table (see FK contraints bsg_cert_movies)
-    const [response1] = await db.query(
-      "DELETE FROM Televisions_Actors WHERE television_id_ta = ?",
+    const {response1} = await db.query(
+      "DELETE FROM Televisions_Actors WHERE television_id_ta = $1",
       [televisionID]
     );
 
@@ -400,8 +400,8 @@ const deleteTelevision = async (req, res) => {
       "rows from Televisions_Actors intersection table"
     );
 
-    const [response2] = await db.query(
-      "DELETE FROM Televisions_Directors WHERE television_id_td = ?",
+    const {response2} = await db.query(
+      "DELETE FROM Televisions_Directors WHERE television_id_td = $1",
       [televisionID]
     );
 
@@ -411,8 +411,8 @@ const deleteTelevision = async (req, res) => {
       "rows from Televisions_Directors intersection table"
     );
 
-    const [response3] = await db.query(
-      "DELETE FROM Televisions_Genres WHERE television_id_tg = ?",
+    const {response3} = await db.query(
+      "DELETE FROM Televisions_Genres WHERE television_id_tg = $1",
       [televisionID]
     );
 
@@ -423,7 +423,7 @@ const deleteTelevision = async (req, res) => {
     );
 
     // Delete the movie from Movies
-    await db.query("DELETE FROM Televisions WHERE television_id = ?", [televisionID]);
+    await db.query("DELETE FROM Televisions WHERE television_id = $1", [televisionID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "TV show deleted successfully" })

@@ -5,14 +5,13 @@
 // Source URL: https://github.com/osu-cs340-ecampus/react-starter-app
 // Authors: Devin Daniels and Zachary Maes under the supervision of Dr. Michael Curry and Dr. Danielle Safonte
 
-// Get an instance of mysql we can use in the app
-const mysql = require("mysql2");
+// Get an instance of pg we can use in the app
+const pg = require("pg");
 require("dotenv").config();
 
 // Create a 'connection pool' using the provided credentials
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  waitForConnections: true,
+const pool = new pg({
+  max: 10,
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "",

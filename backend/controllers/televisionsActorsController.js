@@ -18,7 +18,7 @@ const getTelevisionsActors = async (req, res) => {
     // Select all rows from the "Movies Actors" table
     const query = "SELECT television_actor_id, Actors.actor_name as actor, Televisions.television_title as television FROM Televisions_Actors INNER JOIN Televisions ON television_id_ta = Televisions.television_id INNER JOIN Actors ON actor_id_ta = Actors.actor_id;";
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {

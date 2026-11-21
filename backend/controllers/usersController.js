@@ -16,9 +16,9 @@ const lodash = require("lodash");
 const getUsers = async (req, res) => {
   try {
     // Select all rows from the "Users" table
-    const query = "SELECT user_id, user_name, user_email, user_country FROM `Users`;";
+    const query = 'SELECT user_id, user_name, user_email, user_country FROM "Users";';
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
   try {
     const { user_name, user_email, user_country } = req.body;
     const query =
-      "INSERT INTO Users (user_name, user_email, user_country) VALUES (?, ?, ?)";
+      "INSERT INTO Users (user_name, user_email, user_country) VALUES ($1, $2, $3)";
 
     const response = await db.query(query, [
       user_name,
@@ -55,8 +55,8 @@ const deleteUser = async (req, res) => {
 
   try {
     // Ensure the user exists
-    const [isExisting] = await db.query(
-      "SELECT 1 FROM Users WHERE user_id = ?",
+    const {isExisting} = await db.query(
+      "SELECT 1 FROM Users WHERE user_id = $1",
       [userID]
     );
 
@@ -66,7 +66,7 @@ const deleteUser = async (req, res) => {
     }
 
     // Delete the user from Users
-    await db.query("DELETE FROM Users WHERE user_id = ?", [userID]);
+    await db.query("DELETE FROM Users WHERE user_id = $1", [userID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "User deleted successfully" })

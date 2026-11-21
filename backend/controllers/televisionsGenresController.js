@@ -18,7 +18,7 @@ const getTelevisionsGenres = async (req, res) => {
     // Select all rows from the "Movies Genres" table
     const query = "SELECT television_genre_id, Genres.genre_name as genre, Televisions.television_title as television FROM Televisions_Genres INNER JOIN Televisions ON television_id_tg = Televisions.television_id INNER JOIN Genres ON genre_id_tg = Genres.genre_id;";
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {

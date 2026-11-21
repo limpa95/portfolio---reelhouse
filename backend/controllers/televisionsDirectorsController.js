@@ -18,7 +18,7 @@ const getTelevisionsDirectors = async (req, res) => {
     // Select all rows from the "Movies Directors" table
     const query = "SELECT television_director_id, Directors.director_name as director, Televisions.television_title as television FROM Televisions_Directors INNER JOIN Televisions ON television_id_td = Televisions.television_id INNER JOIN Directors ON director_id_td = Directors.director_id;";
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.query(query);
+    const {rows} = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {
