@@ -6,11 +6,11 @@
 // Authors: Devin Daniels and Zachary Maes under the supervision of Dr. Michael Curry and Dr. Danielle Safonte
 
 // Get an instance of pg we can use in the app
-const pg = require("pg");
+const {Pool} = require("pg");
 require("dotenv").config();
 
 // Create a 'connection pool' using the provided credentials
-const pool = new pg({
+const pool = new Pool({
   max: 10,
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
