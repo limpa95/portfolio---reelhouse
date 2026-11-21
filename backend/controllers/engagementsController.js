@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getEngagements = async (req, res) => {
   try {
     // Select all rows from the "Engagements" table
-    const query = "SELECT engagement_id, favorite, rating, view, user_id, Movies.movie_title AS movie_title, Televisions.television_title AS television_title FROM Engagements LEFT JOIN Movies ON Engagements.movie_id = Movies.movie_id LEFT JOIN Televisions ON Engagements.television_id = Televisions.television_id;";
+    const query = 'SELECT engagement_id, favorite, rating, view, user_id, Movies.movie_title AS movie_title, Televisions.television_title AS television_title FROM "Reelhouse"."Engagements" LEFT JOIN Movies ON Engagements.movie_id = Movies.movie_id LEFT JOIN Televisions ON Engagements.television_id = Televisions.television_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -31,7 +31,7 @@ const getEngagements = async (req, res) => {
 const getEngagementsIDs = async (req, res) => {
   try {
     // Select all rows from the "Engagements" table
-    const query = "SELECT * FROM Engagements;";
+    const query = 'SELECT * FROM "Reelhouse"."Engagements";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -46,7 +46,7 @@ const getEngagementsIDs = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     // Select all rows from the "Users" table
-    const query = 'SELECT user_id, user_name FROM Users;';
+    const query = 'SELECT user_id, user_name FROM "Reelhouse"."Users";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -61,7 +61,7 @@ const getUsers = async (req, res) => {
 const getMovies = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT movie_id, movie_title, movie_total_view FROM Movies;';
+    const query = 'SELECT movie_id, movie_title, movie_total_view FROM "Reelhouse"."Movies";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -76,7 +76,7 @@ const getMovies = async (req, res) => {
 const getTVShows = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT television_id, television_title, television_total_view FROM Televisions;';
+    const query = 'SELECT television_id, television_title, television_total_view FROM "Reelhouse"."Televisions";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -92,7 +92,7 @@ const createEngagement = async (req, res) => {
   try {
     const { favorite, rating, view, user_id, movie_id, television_id, television_total_view } = req.body;
     const query =
-      "INSERT INTO Engagements (favorite, rating, view, user_id, movie_id, television_id) VALUES ($1, $2, $3, $4, $5, $6)";
+      'INSERT INTO "Reelhouse"."Engagements" (favorite, rating, view, user_id, movie_id, television_id) VALUES ($1, $2, $3, $4, $5, $6)';
 
     const response = await db.query(query, [
       favorite === "" ? null : parseInt(favorite),
@@ -118,7 +118,7 @@ const updateMovieTotalView = async (req, res) => {
   const { favorite, rating, view, user_id, movie_id, television_id, television_total_view, movie_total_view } = req.body;
 
   try {
-    const {data} = await db.query("SELECT movie_total_view FROM Movies WHERE movie_id = $1", [
+    const {data} = await db.query('SELECT movie_total_view FROM "Reelhouse"."Movies" WHERE movie_id = $1', [
       movieID,
     ]);
 
@@ -127,7 +127,7 @@ const updateMovieTotalView = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(movie_total_view, oldMovie)) {
       const query =
-        "UPDATE Movies SET movie_total_view=$1 WHERE movie_id=$2";
+        'UPDATE "Reelhouse"."Movies" SET movie_total_view=$1 WHERE movie_id=$2';
 
       const values = [
         movie_total_view,
@@ -156,7 +156,7 @@ const updateTelevisionTotalView = async (req, res) => {
   const { favorite, rating, view, user_id, movie_id, television_id, television_total_view } = req.body;
 
   try {
-    const {data} = await db.query("SELECT television_total_view FROM Televisions WHERE television_id = $1", [
+    const {data} = await db.query('SELECT television_total_view FROM "Reelhouse"."Televisions" WHERE television_id = $1', [
       televisionID,
     ]);
 
@@ -165,7 +165,7 @@ const updateTelevisionTotalView = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(television_total_view, oldTelevision)) {
       const query =
-        "UPDATE Televisions SET television_total_view=$1 WHERE television_id=$2";
+        'UPDATE "Reelhouse"."Televisions" SET television_total_view=$1 WHERE television_id=$2';
 
       const values = [
         television_total_view,
@@ -195,7 +195,7 @@ const deleteEngagement = async (req, res) => {
   try {
     // Ensure the engagement exists
     const {isExisting} = await db.query(
-      "SELECT 1 FROM Engagements WHERE engagement_id = $1",
+      'SELECT 1 FROM "Reelhouse"."Engagements" WHERE engagement_id = $1',
       [engagementID]
     );
 
@@ -205,7 +205,7 @@ const deleteEngagement = async (req, res) => {
     }
 
     // Delete the engagement from Engagements
-    await db.query("DELETE FROM Engagements WHERE engagement_id = $1", [engagementID]);
+    await db.query('DELETE FROM "Reelhouse"."Engagements" WHERE engagement_id = $1', [engagementID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "Engagement deleted successfully" })
