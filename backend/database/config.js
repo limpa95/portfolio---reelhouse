@@ -17,7 +17,11 @@ const pool = new Pool({
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "",
   database: process.env.DB_DATABASE || "",
-  port: process.env.DB_PORT
+  port: process.env.DB_PORT,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: process.env.SSL.replace(/\\n/g, '\n'),
+  }
 });
 
 // Export it for use in our application
