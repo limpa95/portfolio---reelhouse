@@ -220,11 +220,11 @@ const updateTelevision = async (req, res) => {
   const newTelevision = req.body;
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Televisions" WHERE television_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Televisions" WHERE television_id = $1', [
       televisionID,
     ]);
 
-    const oldTelevision = data[0];
+    const oldTelevision = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevision, oldTelevision)) {
@@ -259,11 +259,11 @@ const updateTelevisionGenre = async (req, res) => {
   const newTelevisionGenre2 = {television_genre_id: parseInt(televisionGenreID), television_id_tg: newTelevisionGenre1.television_id_tg, genre_id_tg: newTelevisionGenre1.genre_id_tg};
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Televisions_Genres" WHERE television_genre_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Televisions_Genres" WHERE television_genre_id = $1', [
       televisionGenreID,
     ]);
 
-    const oldTelevisionGenre = data[0];
+    const oldTelevisionGenre = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevisionGenre2, oldTelevisionGenre)) {
@@ -299,11 +299,11 @@ const updateTelevisionActor = async (req, res) => {
   const newTelevisionActor2 = {television_actor_id: parseInt(televisionActorID), television_id_ta: newTelevisionActor1.television_id_ta, actor_id_ta: newTelevisionActor1.actor_id_ta};
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Televisions_Actors" WHERE television_actor_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Televisions_Actors" WHERE television_actor_id = $1', [
       televisionActorID,
     ]);
 
-    const oldTelevisionActor = data[0];
+    const oldTelevisionActor = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevisionActor2, oldTelevisionActor)) {
@@ -339,11 +339,11 @@ const updateTelevisionDirector = async (req, res) => {
   const newTelevisionDirector2 = {television_director_id: parseInt(televisionDirectorID), television_id_td: newTelevisionDirector1.television_id_td, director_id_td: newTelevisionDirector1.director_id_td};
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Televisions_Directors" WHERE television_director_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Televisions_Directors" WHERE television_director_id = $1', [
       televisionDirectorID,
     ]);
 
-    const oldTelevisionDirector = data[0];
+    const oldTelevisionDirector = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newTelevisionDirector2, oldTelevisionDirector)) {

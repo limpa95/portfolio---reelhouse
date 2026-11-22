@@ -118,11 +118,11 @@ const updateMovieTotalView = async (req, res) => {
   const { favorite, rating, view, user_id, movie_id, television_id, television_total_view, movie_total_view } = req.body;
 
   try {
-    const {data} = await db.query('SELECT movie_total_view FROM "Reelhouse"."Movies" WHERE movie_id = $1', [
+    const data = await db.query('SELECT movie_total_view FROM "Reelhouse"."Movies" WHERE movie_id = $1', [
       movieID,
     ]);
 
-    const oldMovie = data[0];
+    const oldMovie = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(movie_total_view, oldMovie)) {
@@ -156,11 +156,11 @@ const updateTelevisionTotalView = async (req, res) => {
   const { favorite, rating, view, user_id, movie_id, television_id, television_total_view } = req.body;
 
   try {
-    const {data} = await db.query('SELECT television_total_view FROM "Reelhouse"."Televisions" WHERE television_id = $1', [
+    const data = await db.query('SELECT television_total_view FROM "Reelhouse"."Televisions" WHERE television_id = $1', [
       televisionID,
     ]);
 
-    const oldTelevision = data[0];
+    const oldTelevision = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(television_total_view, oldTelevision)) {
