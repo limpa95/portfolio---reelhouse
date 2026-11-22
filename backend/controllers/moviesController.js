@@ -225,7 +225,7 @@ const updateMovie = async (req, res) => {
       movieID,
     ]);
 
-    const oldMovie = data[0];
+    const oldMovie = data.rows[0];
     
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovie, oldMovie)) {
@@ -386,7 +386,7 @@ const deleteMovie = async (req, res) => {
     );
 
     // If the person doesn't exist, return an error
-    if (!isExisting.rwos[0].exists) {
+    if (!isExisting.rows[0].exists) {
       return res.status(404).send("Movie not found");
     }
 
