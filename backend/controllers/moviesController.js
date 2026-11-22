@@ -221,7 +221,7 @@ const updateMovie = async (req, res) => {
   const newMovie = req.body;
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies" WHERE movie_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Movies" WHERE movie_id = $1', [
       movieID,
     ]);
 
@@ -261,7 +261,7 @@ const updateMovieGenre = async (req, res) => {
   const newMovieGenre2 = {movie_genre_id: parseInt(movieGenreID), movie_id_mg: newMovieGenre1.movie_id_mg, genre_id_mg: newMovieGenre1.genre_id_mg};
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies_Genres" WHERE movie_genre_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Movies_Genres" WHERE movie_genre_id = $1', [
       movieGenreID,
     ]);
 
@@ -301,7 +301,7 @@ const updateMovieActor = async (req, res) => {
   const newMovieActor2 = {movie_actor_id: parseInt(movieActorID), movie_id_ma: newMovieActor1.movie_id_ma, actor_id_ma: newMovieActor1.actor_id_ma};
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies_Actors" WHERE movie_actor_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Movies_Actors" WHERE movie_actor_id = $1', [
       movieActorID,
     ]);
 
@@ -341,7 +341,7 @@ const updateMovieDirector = async (req, res) => {
   const newMovieDirector2 = {movie_director_id: parseInt(movieDirectorID), movie_id_md: newMovieDirector1.movie_id_md, director_id_md: newMovieDirector1.director_id_md};
 
   try {
-    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies_Directors" WHERE movie_director_id = $1', [
+    const data = await db.query('SELECT * FROM "Reelhouse"."Movies_Directors" WHERE movie_director_id = $1', [
       movieDirectorID,
     ]);
 
