@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getMovies = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT "Reelhouse"."Movies".movie_id, movie_title, movie_length, COALESCE((SELECT sum("Reelhouse"."Engagements".view) FROM "Reelhouse"."Engagements" WHERE "Reelhouse"."Engagements".movie_id = "Reelhouse"."Movies".movie_id), 0) AS "movie_total_view" FROM "Reelhouse"."Movies"';
+    const query = 'SELECT Movies.movie_id, Movies.movie_title, Movies.movie_length, COALESCE(sum(view::int),0) AS movie_total_view FROM "Reelhouse"."Engagements" AS Engagements RIGHT JOIN "Reelhouse"."Movies" AS Movies ON Engagements.movie_id = Movies.movie_id GROUP BY Movies.movie_id Order by Movies.movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -31,7 +31,7 @@ const getMovies = async (req, res) => {
 const getMoviesGenres = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT "Reelhouse"."Movies_Genres".movie_genre_id, "Reelhouse"."Genres".genre_name AS "genres", "Reelhouse"."Movies_Genres".movie_id_mg AS "movieID" FROM "Reelhouse"."Movies_Genres" INNER JOIN "Reelhouse"."Genres" ON "Reelhouse"."Genres".genre_id = "Reelhouse"."Movies_Genres".genre_id_mg INNER JOIN "Reelhouse"."Movies" ON "Reelhouse"."Movies".movie_id = "Reelhouse"."Movies_Genres".movie_id_mg Order by "Reelhouse"."Movies".movie_id;';
+    const query = 'SELECT mg.movie_genre_id, g.genre_name AS "genres", mg.movie_id_mg AS "movieID" FROM "Reelhouse"."Movies_Genres" AS mg INNER JOIN "Reelhouse"."Genres" AS g ON g.genre_id = mg.genre_id_mg INNER JOIN "Reelhouse"."Movies" AS m ON m.movie_id = mg.movie_id_mg Order by m.movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -46,7 +46,7 @@ const getMoviesGenres = async (req, res) => {
 const getMoviesActors = async (req, res) => {
   try {
     // Select all rows from the "Movies_Actors" table
-    const query = 'SELECT "Reelhouse"."Movies_Actors".movie_actor_id, "Reelhouse"."Actors".actor_name AS "actors", "Reelhouse"."Movies_Actors".movie_id_ma AS "movieID" FROM "Reelhouse"."Movies_Actors" INNER JOIN "Reelhouse"."Actors" ON "Reelhouse"."Actors".actor_id = "Reelhouse"."Movies_Actors".actor_id_ma INNER JOIN "Reelhouse"."Movies" ON "Reelhouse"."Movies".movie_id = "Reelhouse"."Movies_Actors".movie_id_ma Order by "Reelhouse"."Movies".movie_id;';
+    const query = 'SELECT ma.movie_actor_id, a.actor_name AS "actors", ma.movie_id_ma AS "movieID" FROM "Reelhouse"."Movies_Actors" AS ma INNER JOIN "Reelhouse"."Actors" AS a ON a.actor_id = ma.actor_id_ma INNER JOIN "Reelhouse"."Movies" AS m ON m.movie_id = ma.movie_id_ma Order by m.movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -61,7 +61,7 @@ const getMoviesActors = async (req, res) => {
 const getMoviesDirectors = async (req, res) => {
   try {
     // Select all rows from the "Movies_Directors" table
-    const query = 'SELECT "Reelhouse"."Movies_Directors".movie_director_id, "Reelhouse"."Directors".director_name AS "directors", "Reelhouse"."Movies_Directors".movie_id_md AS "movieID" FROM "Reelhouse"."Movies_Directors" INNER JOIN "Reelhouse"."Directors" ON "Reelhouse"."Directors".director_id = "Reelhouse"."Movies_Directors".director_id_md INNER JOIN "Reelhouse"."Movies" ON "Reelhouse"."Movies".movie_id = "Reelhouse"."Movies_Directors".movie_id_md Order by "Reelhouse"."Movies".movie_id;';
+    const query = 'SELECT md.movie_director_id, d.director_name AS "directors", md.movie_id_md AS "movieID" FROM "Reelhouse"."Movies_Directors" AS md INNER JOIN "Reelhouse"."Directors" AS d ON d.director_id = md.director_id_md INNER JOIN "Reelhouse"."Movies" AS m ON m.movie_id = md.movie_id_md Order by m.movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
