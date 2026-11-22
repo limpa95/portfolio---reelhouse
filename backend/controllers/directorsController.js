@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getDirectors = async (req, res) => {
   try {
     // Select all rows from the "Directors" table
-    const query = 'SELECT director_id, director_name FROM "Directors";';
+    const query = 'SELECT director_id, director_name FROM "Reelhouse"."Directors";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -32,7 +32,7 @@ const createDirector = async (req, res) => {
   try {
     const { director_name } = req.body;
     const query =
-      "INSERT INTO Directors (director_name) VALUES ($1)";
+      'INSERT INTO "Reelhouse"."Directors" (director_name) VALUES ($1)';
 
     const response = await db.query(query, [
       director_name
@@ -54,7 +54,7 @@ const deleteDirector = async (req, res) => {
   try {
     // Ensure the director exists
     const {isExisting} = await db.query(
-      "SELECT 1 FROM Directors WHERE director_id = $1",
+      'SELECT 1 FROM "Reelhouse"."Directors" WHERE director_id = $1',
       [directorID]
     );
 
@@ -64,7 +64,7 @@ const deleteDirector = async (req, res) => {
     }
 
     // Delete the director from Directors
-    await db.query("DELETE FROM Directors WHERE director_id = $1", [directorID]);
+    await db.query('DELETE FROM "Reelhouse"."Directors" WHERE director_id = $1', [directorID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "Director deleted successfully" })

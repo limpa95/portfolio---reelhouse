@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getMovies = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = "SELECT Movies.movie_id, movie_title, movie_length, COALESCE((SELECT sum(Engagements.view) FROM Engagements WHERE Engagements.movie_id = Movies.movie_id), 0) AS 'movie_total_view' FROM Movies";
+    const query = 'SELECT "Reelhouse"."Movies".movie_id, movie_title, movie_length, COALESCE((SELECT sum("Reelhouse"."Engagements".view) FROM "Reelhouse"."Engagements" WHERE "Reelhouse"."Engagements".movie_id = "Reelhouse"."Movies".movie_id), 0) AS "movie_total_view" FROM "Reelhouse"."Movies"';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -31,7 +31,7 @@ const getMovies = async (req, res) => {
 const getMoviesGenres = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT  Movies_Genres.movie_genre_id, Genres.genre_name AS "genres", Movies_Genres.movie_id_mg AS "movieID" FROM Movies_Genres INNER JOIN Genres ON Genres.genre_id = Movies_Genres.genre_id_mg INNER JOIN Movies ON Movies.movie_id = Movies_Genres.movie_id_mg Order by Movies.movie_id;';
+    const query = 'SELECT "Reelhouse"."Movies_Genres".movie_genre_id, "Reelhouse"."Genres".genre_name AS "genres", "Reelhouse"."Movies_Genres".movie_id_mg AS "movieID" FROM "Reelhouse"."Movies_Genres" INNER JOIN "Reelhouse"."Genres" ON "Reelhouse"."Genres".genre_id = "Reelhouse"."Movies_Genres".genre_id_mg INNER JOIN "Reelhouse"."Movies" ON "Reelhouse"."Movies".movie_id = "Reelhouse"."Movies_Genres".movie_id_mg Order by "Reelhouse"."Movies".movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -46,7 +46,7 @@ const getMoviesGenres = async (req, res) => {
 const getMoviesActors = async (req, res) => {
   try {
     // Select all rows from the "Movies_Actors" table
-    const query = 'SELECT  Movies_Actors.movie_actor_id, Actors.actor_name AS "actors", Movies_Actors.movie_id_ma AS "movieID" FROM Movies_Actors INNER JOIN Actors ON Actors.actor_id = Movies_Actors.actor_id_ma INNER JOIN Movies ON Movies.movie_id = Movies_Actors.movie_id_ma Order by Movies.movie_id;';
+    const query = 'SELECT "Reelhouse"."Movies_Actors".movie_actor_id, "Reelhouse"."Actors".actor_name AS "actors", "Reelhouse"."Movies_Actors".movie_id_ma AS "movieID" FROM "Reelhouse"."Movies_Actors" INNER JOIN "Reelhouse"."Actors" ON "Reelhouse"."Actors".actor_id = "Reelhouse"."Movies_Actors".actor_id_ma INNER JOIN "Reelhouse"."Movies" ON "Reelhouse"."Movies".movie_id = "Reelhouse"."Movies_Actors".movie_id_ma Order by "Reelhouse"."Movies".movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -61,7 +61,7 @@ const getMoviesActors = async (req, res) => {
 const getMoviesDirectors = async (req, res) => {
   try {
     // Select all rows from the "Movies_Directors" table
-    const query = 'SELECT  Movies_Directors.movie_director_id, Directors.director_name AS "directors", Movies_Directors.movie_id_md AS "movieID" FROM Movies_Directors INNER JOIN Directors ON Directors.director_id = Movies_Directors.director_id_md INNER JOIN Movies ON Movies.movie_id = Movies_Directors.movie_id_md Order by Movies.movie_id;';
+    const query = 'SELECT "Reelhouse"."Movies_Directors".movie_director_id, "Reelhouse"."Directors".director_name AS "directors", "Reelhouse"."Movies_Directors".movie_id_md AS "movieID" FROM "Reelhouse"."Movies_Directors" INNER JOIN "Reelhouse"."Directors" ON "Reelhouse"."Directors".director_id = "Reelhouse"."Movies_Directors".director_id_md INNER JOIN "Reelhouse"."Movies" ON "Reelhouse"."Movies".movie_id = "Reelhouse"."Movies_Directors".movie_id_md Order by "Reelhouse"."Movies".movie_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -77,7 +77,7 @@ const getMoviesDirectors = async (req, res) => {
 const getMovieByID = async (req, res) => {
   try {
     const movieID = req.params.id;
-    const query = "SELECT * FROM Movies WHERE movie_id = $1";
+    const query = 'SELECT * FROM "Reelhouse"."Movies" WHERE movie_id = $1';
     const {result} = await db.query(query, [movieID]);
     // Check if movie was found
     if (result.length === 0) {
@@ -95,7 +95,7 @@ const getMovieByID = async (req, res) => {
 const getGenres = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT genre_id, genre_name FROM "Genres";';
+    const query = 'SELECT genre_id, genre_name FROM "Reelhouse"."Genres";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -110,7 +110,7 @@ const getGenres = async (req, res) => {
 const getActors = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT actor_id, actor_name FROM "Actors";';
+    const query = 'SELECT actor_id, actor_name FROM "Reelhouse"."Actors";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -125,7 +125,7 @@ const getActors = async (req, res) => {
 const getDirectors = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT director_id, director_name FROM "Directors";';
+    const query = 'SELECT director_id, director_name FROM "Reelhouse"."Directors";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -141,7 +141,7 @@ const createMovie = async (req, res) => {
   try {
     const { movie_title, movie_length } = req.body;
     const query =
-      "INSERT INTO Movies (movie_title, movie_length) VALUES ($1, $2)";
+      'INSERT INTO "Reelhouse"."Movies" (movie_title, movie_length) VALUES ($1, $2)';
 
     const response = await db.query(query, [
       movie_title,
@@ -161,7 +161,7 @@ const createMovieGenre = async (req, res) => {
   try {
     const { genre_name } = req.body;
     const query =
-      "INSERT INTO Movies_Genres (movie_id_mg, genre_id_mg) VALUES ((SELECT max(movie_id) FROM Movies), (SELECT genre_id FROM Genres WHERE genre_name = $1))";
+      'INSERT INTO "Reelhouse"."Movies_Genres" (movie_id_mg, genre_id_mg) VALUES ((SELECT max(movie_id) FROM "Reelhouse"."Movies"), (SELECT genre_id FROM "Reelhouse"."Genres" WHERE genre_name = $1))';
 
     const response = await db.query(query, [
       genre_name
@@ -180,7 +180,7 @@ const createMovieActor = async (req, res) => {
   try {
     const { actor_name } = req.body;
     const query =
-      "INSERT INTO Movies_Actors (movie_id_ma, actor_id_ma) VALUES ((SELECT max(movie_id) FROM Movies), (SELECT actor_id FROM Actors WHERE actor_name = $1))";
+      'INSERT INTO "Reelhouse"."Movies_Actors" (movie_id_ma, actor_id_ma) VALUES ((SELECT max(movie_id) FROM "Reelhouse"."Movies"), (SELECT actor_id FROM "Reelhouse"."Actors" WHERE actor_name = $1))';
 
     const response = await db.query(query, [
       actor_name
@@ -199,7 +199,7 @@ const createMovieDirector = async (req, res) => {
   try {
     const { director_name } = req.body;
     const query =
-      "INSERT INTO Movies_Directors (movie_id_md, director_id_md) VALUES ((SELECT max(movie_id) FROM Movies), (SELECT director_id FROM Directors WHERE director_name = $1))";
+      'INSERT INTO "Reelhouse"."Movies_Directors" (movie_id_md, director_id_md) VALUES ((SELECT max(movie_id) FROM "Reelhouse"."Movies"), (SELECT director_id FROM "Reelhouse"."Directors" WHERE director_name = $1))';
 
     const response = await db.query(query, [
       director_name
@@ -221,7 +221,7 @@ const updateMovie = async (req, res) => {
   const newMovie = req.body;
 
   try {
-    const {data} = await db.query("SELECT * FROM Movies WHERE movie_id = $1", [
+    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies" WHERE movie_id = $1', [
       movieID,
     ]);
 
@@ -230,7 +230,7 @@ const updateMovie = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovie, oldMovie)) {
       const query =
-        "UPDATE Movies SET movie_title=$1, movie_length=$2 WHERE movie_id=$3";
+        'UPDATE "Reelhouse"."Movies" SET movie_title=$1, movie_length=$2 WHERE movie_id=$3';
 
       const values = [
         newMovie.movie_title,
@@ -261,7 +261,7 @@ const updateMovieGenre = async (req, res) => {
   const newMovieGenre2 = {movie_genre_id: parseInt(movieGenreID), movie_id_mg: newMovieGenre1.movie_id_mg, genre_id_mg: newMovieGenre1.genre_id_mg};
 
   try {
-    const {data} = await db.query("SELECT * FROM Movies_Genres WHERE movie_genre_id = $1", [
+    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies_Genres" WHERE movie_genre_id = $1', [
       movieGenreID,
     ]);
 
@@ -270,7 +270,7 @@ const updateMovieGenre = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovieGenre2, oldMovieGenre)) {
       const query =
-        "UPDATE Movies_Genres SET movie_id_mg=$1, genre_id_mg=$2 WHERE movie_genre_id=$3";
+        'UPDATE "Reelhouse"."Movies_Genres" SET movie_id_mg=$1, genre_id_mg=$2 WHERE movie_genre_id=$3';
 
       const values = [
         newMovieGenre2.movie_id_mg,
@@ -301,7 +301,7 @@ const updateMovieActor = async (req, res) => {
   const newMovieActor2 = {movie_actor_id: parseInt(movieActorID), movie_id_ma: newMovieActor1.movie_id_ma, actor_id_ma: newMovieActor1.actor_id_ma};
 
   try {
-    const {data} = await db.query("SELECT * FROM Movies_Actors WHERE movie_actor_id = $1", [
+    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies_Actors" WHERE movie_actor_id = $1', [
       movieActorID,
     ]);
 
@@ -310,7 +310,7 @@ const updateMovieActor = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovieActor2, oldMovieActor)) {
       const query =
-        "UPDATE Movies_Actors SET movie_id_ma=$1, actor_id_ma=$2 WHERE movie_actor_id=$3";
+        'UPDATE "Reelhouse"."Movies_Actors" SET movie_id_ma=$1, actor_id_ma=$2 WHERE movie_actor_id=$3';
 
       const values = [
         newMovieActor2.movie_id_ma,
@@ -341,7 +341,7 @@ const updateMovieDirector = async (req, res) => {
   const newMovieDirector2 = {movie_director_id: parseInt(movieDirectorID), movie_id_md: newMovieDirector1.movie_id_md, director_id_md: newMovieDirector1.director_id_md};
 
   try {
-    const {data} = await db.query("SELECT * FROM Movies_Directors WHERE movie_director_id = $1", [
+    const {data} = await db.query('SELECT * FROM "Reelhouse"."Movies_Directors" WHERE movie_director_id = $1', [
       movieDirectorID,
     ]);
 
@@ -350,7 +350,7 @@ const updateMovieDirector = async (req, res) => {
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovieDirector2, oldMovieDirector)) {
       const query =
-        "UPDATE Movies_Directors SET movie_id_md=$1, director_id_md=$2 WHERE movie_director_id=$3";
+        'UPDATE "Reelhouse"."Movies_Directors" SET movie_id_md=$1, director_id_md=$2 WHERE movie_director_id=$3';
 
       const values = [
         newMovieDirector2.movie_id_md,
@@ -381,7 +381,7 @@ const deleteMovie = async (req, res) => {
   try {
     // Ensure the person exitst
     const {isExisting} = await db.query(
-      "SELECT 1 FROM Movies WHERE movie_id = $1",
+      'SELECT 1 FROM "Reelhouse"."Movies" WHERE movie_id = $1',
       [movieID]
     );
 
@@ -392,7 +392,7 @@ const deleteMovie = async (req, res) => {
 
     // Delete related records from the intersection table (see FK contraints bsg_cert_movies)
     const {response1} = await db.query(
-      "DELETE FROM Movies_Actors WHERE movie_id_ma = $1",
+      'DELETE FROM "Reelhouse"."Movies_Actors" WHERE movie_id_ma = $1',
       [movieID]
     );
 
@@ -403,7 +403,7 @@ const deleteMovie = async (req, res) => {
     );
 
     const {response2} = await db.query(
-      "DELETE FROM Movies_Directors WHERE movie_id_md = $1",
+      'DELETE FROM "Reelhouse"."Movies_Directors" WHERE movie_id_md = $1',
       [movieID]
     );
 
@@ -414,7 +414,7 @@ const deleteMovie = async (req, res) => {
     );
 
     const {response3} = await db.query(
-      "DELETE FROM Movies_Genres WHERE movie_id_mg = $1",
+      'DELETE FROM "Reelhouse"."Movies_Genres" WHERE movie_id_mg = $1',
       [movieID]
     );
 
@@ -425,7 +425,7 @@ const deleteMovie = async (req, res) => {
     );
 
     // Delete the movie from Movies
-    await db.query("DELETE FROM Movies WHERE movie_id = $1", [movieID]);
+    await db.query('DELETE FROM "Reelhouse"."Movies" WHERE movie_id = $1', [movieID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "Movie deleted successfully" })

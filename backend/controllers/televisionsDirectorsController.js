@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getTelevisionsDirectors = async (req, res) => {
   try {
     // Select all rows from the "Movies Directors" table
-    const query = "SELECT television_director_id, Directors.director_name as director, Televisions.television_title as television FROM Televisions_Directors INNER JOIN Televisions ON television_id_td = Televisions.television_id INNER JOIN Directors ON director_id_td = Directors.director_id;";
+    const query = 'SELECT television_director_id, "Reelhouse"."Directors".director_name as director, "Reelhouse"."Televisions".television_title as television FROM "Reelhouse"."Televisions_Directors" INNER JOIN "Reelhouse"."Televisions" ON television_id_td = "Reelhouse"."Televisions".television_id INNER JOIN "Reelhouse"."Directors" ON director_id_td = "Reelhouse"."Directors".director_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client

@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getGenres = async (req, res) => {
   try {
     // Select all rows from the "Genres" table
-    const query = 'SELECT genre_id, genre_name FROM "Genres";';
+    const query = 'SELECT genre_id, genre_name FROM "Reelhouse"."Genres";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -32,7 +32,7 @@ const createGenre = async (req, res) => {
   try {
     const { genre_name } = req.body;
     const query =
-      "INSERT INTO Genres (genre_name) VALUES ($1)";
+      'INSERT INTO "Reelhouse"."Genres" (genre_name) VALUES ($1)';
 
     const response = await db.query(query, [
       genre_name
@@ -54,7 +54,7 @@ const deleteGenre = async (req, res) => {
   try {
     // Ensure the genre exists
     const {isExisting} = await db.query(
-      "SELECT 1 FROM Genres WHERE genre_id = $1",
+      'SELECT 1 FROM "Reelhouse"."Genres" WHERE genre_id = $1',
       [genreID]
     );
 
@@ -64,7 +64,7 @@ const deleteGenre = async (req, res) => {
     }
 
     // Delete the genre from Genres
-    await db.query("DELETE FROM Genres WHERE genre_id = $1", [genreID]);
+    await db.query('DELETE FROM "Reelhouse"."Genres" WHERE genre_id = $1', [genreID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "Genre deleted successfully" })

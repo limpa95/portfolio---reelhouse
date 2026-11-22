@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getActors = async (req, res) => {
   try {
     // Select all rows from the "Actors" table
-    const query = 'SELECT actor_id, actor_name FROM "Actors";';
+    const query = 'SELECT actor_id, actor_name FROM "Reelhouse"."Actors";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -32,7 +32,7 @@ const createActor = async (req, res) => {
   try {
     const { actor_name } = req.body;
     const query =
-      "INSERT INTO Actors (actor_name) VALUES ($1)";
+      'INSERT INTO "Reelhouse"."Actors" (actor_name) VALUES ($1)';
 
     const response = await db.query(query, [
       actor_name
@@ -54,7 +54,7 @@ const deleteActor = async (req, res) => {
   try {
     // Ensure the actor exists
     const {isExisting} = await db.query(
-      "SELECT 1 FROM Actors WHERE actor_id = $1",
+      'SELECT 1 FROM "Reelhouse"."Actors" WHERE actor_id = $1',
       [actorID]
     );
 
@@ -64,7 +64,7 @@ const deleteActor = async (req, res) => {
     }
 
     // Delete the actor from Actors
-    await db.query("DELETE FROM Actors WHERE actor_id = $1", [actorID]);
+    await db.query('DELETE FROM "Reelhouse"."Actors" WHERE actor_id = $1', [actorID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "Actor deleted successfully" })

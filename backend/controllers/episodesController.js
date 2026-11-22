@@ -16,7 +16,7 @@ const lodash = require("lodash");
 const getEpisodes = async (req, res) => {
   try {
     // Select all rows from the "Episodes" table
-    const query = "SELECT episode_id, episode_title, episode_length, Televisions.television_title AS television_name FROM Episodes INNER JOIN Televisions ON television_id_ep = Televisions.television_id;";
+    const query = 'SELECT episode_id, episode_title, episode_length, "Reelhouse"."Televisions".television_title AS television_name FROM "Reelhouse"."Episodes" INNER JOIN "Reelhouse"."Televisions" ON television_id_ep = "Reelhouse"."Televisions".television_id;';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -31,7 +31,7 @@ const getEpisodes = async (req, res) => {
 const getTVShows = async (req, res) => {
   try {
     // Select all rows from the "Movies" table
-    const query = 'SELECT television_id, television_title FROM Televisions;';
+    const query = 'SELECT television_id, television_title FROM "Reelhouse"."Televisions";';
     // Execute the query using the "db" object from the configuration file
     const {rows} = await db.query(query);
     // Send back the rows to the client
@@ -47,7 +47,7 @@ const createEpisode = async (req, res) => {
   try {
     const { episode_title, episode_length, television_id_ep } = req.body;
     const query =
-      "INSERT INTO Episodes (episode_title, episode_length, television_id_ep) VALUES ($1, $2, $3)";
+      'INSERT INTO "Reelhouse"."Episodes" (episode_title, episode_length, television_id_ep) VALUES ($1, $2, $3)';
 
     const response = await db.query(query, [
       episode_title,
@@ -71,7 +71,7 @@ const deleteEpisode = async (req, res) => {
   try {
     // Ensure the episode exists
     const {isExisting} = await db.query(
-      "SELECT 1 FROM Episodes WHERE episode_id = $1",
+      'SELECT 1 FROM "Reelhouse"."Episodes" WHERE episode_id = $1',
       [episodeID]
     );
 
@@ -81,7 +81,7 @@ const deleteEpisode = async (req, res) => {
     }
 
     // Delete the episode from Episodes
-    await db.query("DELETE FROM Episodes WHERE episode_id = $1", [episodeID]);
+    await db.query('DELETE FROM "Reelhouse"."Episodes" WHERE episode_id = $1', [episodeID]);
 
     // Return the appropriate status code
     res.status(204).json({ message: "Episode deleted successfully" })
