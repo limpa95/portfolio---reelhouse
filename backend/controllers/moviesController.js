@@ -265,7 +265,7 @@ const updateMovieGenre = async (req, res) => {
       movieGenreID,
     ]);
 
-    const oldMovieGenre = data[0];
+    const oldMovieGenre = data.rows[0];
     
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovieGenre2, oldMovieGenre)) {
@@ -305,7 +305,7 @@ const updateMovieActor = async (req, res) => {
       movieActorID,
     ]);
 
-    const oldMovieActor = data[0];
+    const oldMovieActor = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovieActor2, oldMovieActor)) {
@@ -345,7 +345,7 @@ const updateMovieDirector = async (req, res) => {
       movieDirectorID,
     ]);
 
-    const oldMovieDirector = data[0];
+    const oldMovieDirector = data.rows[0];
 
     // If any attributes are not equal, perform update
     if (!lodash.isEqual(newMovieDirector2, oldMovieDirector)) {
