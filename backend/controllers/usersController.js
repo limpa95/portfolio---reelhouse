@@ -56,7 +56,7 @@ const deleteUser = async (req, res) => {
   try {
     // Ensure the user exists
     const {isExisting} = await db.query(
-      'SELECT 1 FROM "Reelhouse"."Users" WHERE user_id = $1',
+      'SELECT CASE WHEN EXISTS (SELECT 1 FROM "Reelhouse"."Users" WHERE user_id = $1) THEN 1 ELSE 0 END',
       [userID]
     );
 
