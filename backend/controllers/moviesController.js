@@ -380,13 +380,13 @@ const deleteMovie = async (req, res) => {
 
   try {
     // Ensure the person exitst
-    const {isExisting} = await db.query(
-      'SELECT 1 FROM "Reelhouse"."Movies" WHERE movie_id = $1',
+    const isExisting = await db.query(
+      'SELECT EXISTS(SELECT 1 FROM "Reelhouse"."Movies" WHERE movie_id = $1) AS "exists"',
       [movieID]
     );
 
     // If the person doesn't exist, return an error
-    if (isExisting.length === 0) {
+    if (!isExisting.rwos[0].exists) {
       return res.status(404).send("Movie not found");
     }
 

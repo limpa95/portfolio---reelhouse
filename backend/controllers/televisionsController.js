@@ -379,12 +379,12 @@ const deleteTelevision = async (req, res) => {
   try {
     // Ensure the person exitst
     const {isExisting} = await db.query(
-      'SELECT 1 FROM "Reelhouse."Televisions" WHERE television_id = $1',
+      'SELECT EXISTS(SELECT 1 FROM "Reelhouse."Televisions" WHERE television_id = $1) AS "exists"',
       [televisionID]
     );
 
     // If the person doesn't exist, return an error
-    if (isExisting.length === 0) {
+    if (!isExisting.row[0].exists) {
       return res.status(404).send("TV show not found");
     }
 

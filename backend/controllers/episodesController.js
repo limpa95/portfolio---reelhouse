@@ -70,13 +70,13 @@ const deleteEpisode = async (req, res) => {
 
   try {
     // Ensure the episode exists
-    const {isExisting} = await db.query(
-      'SELECT 1 FROM "Reelhouse"."Episodes" WHERE episode_id = $1',
+    const isExisting = await db.query(
+      'SELECT EXISTS(SELECT 1 FROM "Reelhouse"."Episodes" WHERE episode_id = $1) AS "exists',
       [episodeID]
     );
 
     // If the episode doesn't exist, return an error
-    if (isExisting.length === 0) {
+    if (!isExisting.rows[0].exists) {
       return res.status(404).send("Episode not found");
     }
 

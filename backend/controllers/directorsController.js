@@ -53,13 +53,13 @@ const deleteDirector = async (req, res) => {
 
   try {
     // Ensure the director exists
-    const {isExisting} = await db.query(
-      'SELECT 1 FROM "Reelhouse"."Directors" WHERE director_id = $1',
+    const isExisting = await db.query(
+      'SELECT EXISTS(SELECT 1 FROM "Reelhouse"."Directors" WHERE director_id = $1) AS "exists',
       [directorID]
     );
 
     // If the director doesn't exist, return an error
-    if (isExisting.length === 0) {
+    if (!isExisting.rows[0].exists) {
       return res.status(404).send("Director not found");
     }
 

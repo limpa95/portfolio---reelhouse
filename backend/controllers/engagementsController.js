@@ -194,13 +194,13 @@ const deleteEngagement = async (req, res) => {
 
   try {
     // Ensure the engagement exists
-    const {isExisting} = await db.query(
-      'SELECT 1 FROM "Reelhouse"."Engagements" WHERE engagement_id = $1',
+    const isExisting = await db.query(
+      'SELECT EXISTS(SELECT 1 FROM "Reelhouse"."Engagements" WHERE engagement_id = $1) AS "exists',
       [engagementID]
     );
 
     // If the engagement doesn't exist, return an error
-    if (isExisting.length === 0) {
+    if (!isExisting.rows[0].exists) {
       return res.status(404).send("TV show not found");
     }
 
