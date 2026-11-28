@@ -11,7 +11,8 @@ require("dotenv").config();
 
 // Create a 'connection pool' using the provided credentials
 const pool = new Pool({
-  connectionLimit: 10,
+  max: 5,
+  idleTimeoutMillis: 10000,
   maxLifetimeSeconds: 1800,
   waitForConnections: true,
   host: process.env.DB_HOST || "localhost",
